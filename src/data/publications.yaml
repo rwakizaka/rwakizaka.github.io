@@ -1,0 +1,150 @@
+# How to add a publication
+# -------------------------
+# Append a new block anywhere in this file — entries are grouped by `kind` and
+# sorted by year (then month) descending automatically, so order here does not
+# matter. Your own name is underlined automatically via profile.yaml's
+# `nameAliases`, so don't write markup in `authors`.
+#
+# kind: conference        -> Conference Papers (refereed)
+#       journal           -> Journal Articles (refereed)
+#       domestic-refereed -> Conference Papers (refereed, domestic)
+#       domestic          -> Conference Papers (not refereed, domestic)
+#       talk              -> Talks
+#       poster            -> Posters
+#
+# Optional fields: month, note, location, venueUrl, links[]
+# Link URLs may point at files in public/ (e.g. /papers/foo.pdf).
+
+# --- Conference Papers (refereed) --------------------------------------------
+
+- kind: conference
+  year: 2024
+  authors: [Ryo Wakizaka, Yasunari Suzuki, Atsushi Igarashi]
+  title: Type-Based Verification of Connectivity Constraints in Lattice Surgery
+  venue: Asian Symposium on Programming Languages and Systems (APLAS2024)
+  links:
+    - label: paper
+      url: https://link.springer.com/chapter/10.1007/978-981-97-8943-6_11
+
+- kind: conference
+  year: 2023
+  authors: [Ryo Wakizaka]
+  title: Towards Reliable Distributed Quantum Computing on Quantum Interconnects
+  venue: >-
+    The First International Workshop on the Art, Science, and Engineering of
+    Quantum Programming (QP2023)
+  links:
+    - label: paper
+      url: https://dl.acm.org/doi/10.1145/3594671.3594691
+
+- kind: conference
+  year: 2022
+  authors: [Ryo Wakizaka, Shin Nishio]
+  note: equally contributed
+  title: "InQuIR: Intermediate Representation for Interconnected Quantum Computers"
+  venue: Quantum Resource Estimation (QRE2022)
+  links:
+    - label: arxiv
+      url: https://arxiv.org/abs/2302.00267
+
+# --- Conference Papers (refereed, domestic) ----------------------------------
+
+- kind: domestic-refereed
+  year: 2022
+  month: 3
+  authors: [脇坂遼, 五十嵐淳]
+  title: Type-Based Qubit Allocation for a First-Order Quantum Programming Language
+  venue: 第24回プログラミングおよびプログラミング言語ワークショップ（PPL2022）
+
+# --- Conference Papers (not refereed, domestic) ------------------------------
+
+- kind: domestic
+  year: 2025
+  month: 3
+  authors: [西尾真, 脇坂遼, 佐久間大輔, 上野洋典, 鈴木泰成]
+  title: フォールトトレラント量子マルチプログラミングのためのオンラインスケジューラ
+  venue: 第14回量子ソフトウェア研究会 (QIT14)
+
+- kind: domestic
+  year: 2022
+  month: 5
+  authors: [脇坂遼, 鈴木泰成, 徳永裕己]
+  title: 表面符号と格子手術を用いた量子計算のためのコンパイラバックエンド開発
+  venue: 第46回量子情報技術研究会 (QIT46)
+
+- kind: domestic
+  year: 2020
+  authors: [脇坂遼, 五十嵐淳]
+  title: 量子ビット連結性制約検査のための依存型システム
+  venue: 日本ソフトウェア科学会第37回大会 (JSSST2020)
+  links:
+    - label: paper
+      url: /papers/jssst2020-ppl3-3.pdf
+
+# --- Talks --------------------------------------------------------------------
+
+- kind: talk
+  year: 2025
+  month: 1
+  authors: [Yusuke Matsushita, Kengo Hirata, Ryo Wakizaka]
+  title: Concurrent Quantum Separation Logic for Fine-Grained Parallelism
+  venue: PLanQC2025
+  venueUrl: https://popl25.sigplan.org/home/planqc-2025
+  location: >-
+    Denver, Colorado, United States, co-located with the 52nd ACM SIGPLAN
+    Symposium on Principles of Programming Languages (POPL 2025)
+  links:
+    - label: slide
+      url: /slides/planqc2025.pdf
+
+- kind: talk
+  year: 2022
+  month: 6
+  authors: [Ryo Wakizaka, Shin Nishio]
+  title: "InQuIR: Intermediate Representation for Interconnected Quantum Computers"
+  venue: QRE2022
+  venueUrl: https://www.quantumresource.org/
+  location: >-
+    New York, USA, co-located with International Symposium on Computer
+    Architecture (ISCA)
+
+# --- Posters ------------------------------------------------------------------
+
+- kind: poster
+  year: 2025
+  month: 4
+  authors: [Shin Nishio, Ryo Wakizaka, Daisuke Sakuma, Yosuke Ueno, Yasunari Suzuki]
+  title: Online Job Scheduler for Fault-tolerant Quantum Multiprogramming
+  venue: Quantum Computing Theory in Practice (QCTiP2025)
+  location: Berlin, Germany
+
+- kind: poster
+  year: 2025
+  month: 3
+  authors: [脇坂遼, 鈴木泰成]
+  title: 格子手術プログラムのためのコンポジショナルな量子ビット割り当て手法
+  venue: 第27回プログラミングおよびプログラミング言語ワークショップ (PPL2025)
+  location: 愛知県
+
+- kind: poster
+  year: 2024
+  month: 9
+  authors: [Ryo Wakizaka, Shin Nishio]
+  title: Resource-Aware Deadlock Freedom for Distributed Quantum Programs
+  venue: 6th International Workshop on Quantum Compilation (IWQC2024)
+  location: Berlin, Germany
+
+- kind: poster
+  year: 2022
+  month: 9
+  authors: [脇坂遼, 西尾真]
+  title: "InQuIR: Intermediate Representation for Interconnected Quantum Computers"
+  venue: QEd summer school 2022
+  location: 沖縄, 日本
+
+- kind: poster
+  year: 2020
+  month: 3
+  authors: [脇坂遼, 五十嵐淳]
+  title: 量子プログラムのための依存型を用いた Coupling Graph 解析
+  venue: 第22回プログラミングおよびプログラミング言語ワークショップ (PPL2020)

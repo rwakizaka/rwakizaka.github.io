@@ -1,2 +1,25 @@
-/public/
-/resources/
+# build output
+dist/
+
+# generated types
+.astro/
+
+# dependencies
+node_modules/
+
+# logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# environment variables
+.env
+.env.production
+
+# macOS
+.DS_Store
+
+# NOTE: public/ is a SOURCE directory in Astro (it holds papers/, slides/).
+# It must never be ignored here — the old Hugo .gitignore ignored /public/
+# because that was Hugo's build output.

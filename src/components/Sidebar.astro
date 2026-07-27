@@ -1,0 +1,211 @@
+---
+import type { CollectionEntry } from 'astro:content'
+
+interface Props {
+  profile: CollectionEntry<'profile'>['data']
+}
+
+const { profile } = Astro.props
+
+const path = Astro.url.pathname.replace(/\/+$/, '') || '/'
+const isHome = path === '/'
+
+// The name is the page's <h1> on the home page; elsewhere each page supplies
+// its own heading, so the name is demoted to a plain link.
+const NameTag = isHome ? 'h1' : 'div'
+
+const nav = [
+  { label: 'About', href: '/' },
+  { label: 'Publications', href: '/publications' },
+  { label: 'Blog', href: '/blog' },
+  ...(profile.cv ? [{ label: 'CV', href: profile.cv }] : []),
+]
+
+const isCurrent = (href: string) =>
+  href === '/' ? isHome : path === href || path.startsWith(`${href}/`)
+---
+
+<aside class="sidebar">
+  <NameTag class="name">
+    {isHome ? profile.name : <a href="/">{profile.name}</a>}
+  </NameTag>
+  <p class="role">{profile.role}</p>
+
+  <ul class="plain-list affiliation">
+    {
+      profile.affiliation.map((line) => (
+        <li>{line.url ? <a href={line.url}>{line.text}</a> : line.text}</li>
+      ))
+    }
+  </ul>
+
+  <nav class="nav" aria-label="Primary">
+    <ul class="plain-list">
+      {
+        nav.map((item) => (
+          <li>
+            <a
+              href={item.href}
+              aria-current={isCurrent(item.href) ? 'page' : undefined}
+            >
+              {item.label}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </nav>
+
+  <ul class="plain-list contact">
+    {/* Label only — the full address wraps badly at sidebar width and is
+        spelled out in the Contact section of the CV. */}
+    <li><a href={`mailto:${profile.email}`}>Email</a></li>
+    {
+      profile.links.map((link) => (
+        <li>
+          <a href={link.url} rel="me noopener">
+            {link.label}
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+</aside>
+
+<style>
+  .sidebar {
+    padding-bottom: 1.75rem;
+    border-bottom: 1px solid var(--color-rule);
+  }
+
+  .name {
+    font-size: clamp(1.45rem, 1.3rem + 0.8vw, 1.7rem);
+    font-weight: 620;
+    letter-spacing: -0.022em;
+    line-height: 1.2;
+    margin: 0;
+  }
+
+  .name :global(a) {
+    text-decoration: none;
+  }
+
+  .role {
+    font-size: 0.95rem;
+    color: var(--color-muted);
+    margin: 0.15rem 0 0.9rem;
+  }
+
+  .affiliation {
+    font-size: 0.82rem;
+    line-height: 1.55;
+    color: var(--color-muted);
+  }
+
+  .affiliation li {
+    margin-bottom: 0.1rem;
+  }
+
+  .affiliation a {
+    text-decoration-color: var(--color-rule-strong);
+  }
+
+  .nav ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0 1.35rem;
+    margin-top: 1.25rem;
+  }
+
+  .nav li {
+    margin: 0;
+  }
+
+  .nav a {
+    display: inline-block;
+    padding-block: 0.45rem;
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    letter-spacing: 0.04em;
+    color: var(--color-muted);
+    text-decoration: none;
+    border-bottom: 2px solid transparent;
+  }
+
+  .nav a:hover,
+  .nav a:focus-visible {
+    color: var(--color-accent);
+  }
+
+  .nav a[aria-current='page'] {
+    color: var(--color-text);
+    border-bottom-color: var(--color-accent);
+  }
+
+  .contact {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.3rem 1.25rem;
+    margin-top: 1.1rem;
+  }
+
+  .contact li {
+    margin: 0;
+  }
+
+  .contact a {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--color-muted);
+    text-decoration: none;
+  }
+
+  .contact a:hover,
+  .contact a:focus-visible {
+    color: var(--color-accent);
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+
+  /* Two-column layout: the sidebar becomes a real sidebar and stays in view. */
+  @media (min-width: 62rem) {
+    .sidebar {
+      position: sticky;
+      top: 3rem;
+      align-self: start;
+      padding-bottom: 0;
+      border-bottom: 0;
+    }
+
+    .nav ul,
+    .contact {
+      display: block;
+    }
+
+    .nav ul {
+      margin-top: 1.5rem;
+    }
+
+    .nav a {
+      padding-block: 0.28rem;
+      border-bottom: 0;
+      border-left: 2px solid transparent;
+      padding-left: 0.7rem;
+      margin-left: -0.7rem;
+    }
+
+    .nav a[aria-current='page'] {
+      border-left-color: var(--color-accent);
+    }
+
+    .contact {
+      margin-top: 1.75rem;
+      padding-top: 1.25rem;
+      border-top: 1px solid var(--color-rule);
+    }
+
+    .contact li {
+      margin-bottom: 0.2rem;
+    }
+  }
+</style>

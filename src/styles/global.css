@@ -1,0 +1,439 @@
+/*
+ * Simple, modern, typography-led base.
+ * Single column, fluid type scale, hairline rules, no animation anywhere.
+ */
+
+:root {
+  --font-sans: 'Inter Variable', system-ui, -apple-system, 'Segoe UI',
+    'Hiragino Sans', 'Noto Sans JP', 'Yu Gothic', sans-serif;
+  --font-mono: 'JetBrains Mono Variable', ui-monospace, SFMono-Regular, Menlo,
+    Consolas, monospace;
+
+  --measure: 46rem;
+  --gutter: clamp(1.25rem, 0.9rem + 1.6vw, 2rem);
+
+  /* Neutrals carry a touch of warmth so the page doesn't read as clinical. */
+  --color-bg: #fcfcfb;
+  --color-surface: #f4f4f1;
+  --color-text: #17181a;
+  --color-muted: #64676d;
+  --color-faint: #8b8f96;
+  --color-rule: #e4e4df;
+  --color-rule-strong: #cfcfc9;
+  --color-accent: #1f5fd0;
+  --color-accent-soft: rgba(31, 95, 208, 0.1);
+  --color-selection: #d8e4fb;
+
+  --radius: 6px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-bg: #0e1012;
+    --color-surface: #17191c;
+    --color-text: #e7e7e4;
+    --color-muted: #a0a4aa;
+    --color-faint: #7d828a;
+    --color-rule: #26292d;
+    --color-rule-strong: #3a3e44;
+    --color-accent: #7cb0ff;
+    --color-accent-soft: rgba(124, 176, 255, 0.14);
+    --color-selection: #23364f;
+  }
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-sans);
+  font-size: clamp(1rem, 0.975rem + 0.12vw, 1.0625rem);
+  line-height: 1.7;
+  font-synthesis-weight: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: var(--color-selection);
+}
+
+/* ---------------------------------------------------------------- layout -- */
+
+/* One column on phones; sidebar + content from 62rem up. */
+.layout {
+  width: 100%;
+  max-width: 70rem;
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+  padding-block: clamp(2rem, 1.4rem + 2.4vw, 3.25rem) 3.5rem;
+  display: grid;
+  gap: 2rem;
+}
+
+@media (min-width: 62rem) {
+  .layout {
+    grid-template-columns: 15rem minmax(0, 1fr);
+    gap: 4.5rem;
+  }
+}
+
+/* min-width:0 lets the grid item shrink so wide children can scroll instead
+   of stretching the page. */
+.column {
+  min-width: 0;
+  max-width: var(--measure);
+}
+
+.skip-link {
+  position: absolute;
+  left: -9999px;
+}
+
+.skip-link:focus {
+  left: var(--gutter);
+  top: 0.5rem;
+  z-index: 10;
+  padding: 0.5rem 0.75rem;
+  background: var(--color-bg);
+  border: 1px solid var(--color-text);
+  border-radius: var(--radius);
+}
+
+/* ------------------------------------------------------------ typography -- */
+
+h1,
+h2,
+h3,
+h4 {
+  line-height: 1.25;
+  text-wrap: balance;
+}
+
+h1 {
+  font-size: clamp(1.75rem, 1.45rem + 1.5vw, 2.35rem);
+  font-weight: 620;
+  letter-spacing: -0.022em;
+  margin: 0 0 0.4rem;
+}
+
+/* Section headings read as small editorial labels rather than big titles. */
+/* The first block in the content column shouldn't push itself down. */
+main > :first-child {
+  margin-top: 0;
+}
+
+h2 {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-faint);
+  margin: 3.25rem 0 1.25rem;
+  padding-bottom: 0.6rem;
+  border-bottom: 1px solid var(--color-rule);
+}
+
+h3 {
+  font-size: 1.05rem;
+  font-weight: 620;
+  letter-spacing: -0.01em;
+  margin: 2rem 0 0.6rem;
+}
+
+p {
+  margin: 0 0 1rem;
+  text-wrap: pretty;
+}
+
+a {
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.18em;
+  text-decoration-color: var(--color-rule-strong);
+}
+
+a:hover,
+a:focus-visible {
+  color: var(--color-accent);
+  text-decoration-color: currentColor;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+ul,
+ol {
+  margin: 0 0 1rem;
+  padding-left: 1.15rem;
+}
+
+li {
+  margin-bottom: 0.3rem;
+}
+
+li::marker {
+  color: var(--color-faint);
+}
+
+strong {
+  font-weight: 620;
+}
+
+.muted {
+  color: var(--color-muted);
+}
+
+.mono {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+/* A bare list used for layout rather than enumeration. */
+.plain-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+hr {
+  border: 0;
+  border-top: 1px solid var(--color-rule);
+  margin: 2.5rem 0;
+}
+
+/* ---------------------------------------------------------------- chips --- */
+
+/* Small bordered links used for [paper], [slide], … */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3em;
+  padding: 0.1rem 0.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  line-height: 1.6;
+  color: var(--color-muted);
+  border: 1px solid var(--color-rule-strong);
+  border-radius: 999px;
+  text-decoration: none;
+}
+
+.chip:hover,
+.chip:focus-visible {
+  color: var(--color-accent);
+  border-color: currentColor;
+  background: var(--color-accent-soft);
+}
+
+/* ----------------------------------------------------------------- code --- */
+
+code,
+kbd,
+samp {
+  font-family: var(--font-mono);
+  font-size: 0.9em;
+}
+
+:not(pre) > code {
+  padding: 0.12em 0.36em;
+  background: var(--color-surface);
+  border-radius: 4px;
+}
+
+pre {
+  padding: 1rem 1.1rem;
+  overflow-x: auto;
+  border: 1px solid var(--color-rule);
+  border-radius: var(--radius);
+  line-height: 1.6;
+}
+
+pre code {
+  font-size: 0.85rem;
+}
+
+/* Shiki emits both themes as CSS variables; swap them with the OS preference. */
+@media (prefers-color-scheme: dark) {
+  .astro-code,
+  .astro-code span {
+    color: var(--shiki-dark) !important;
+    background-color: var(--shiki-dark-bg) !important;
+    font-style: var(--shiki-dark-font-style) !important;
+    font-weight: var(--shiki-dark-font-weight) !important;
+    text-decoration: var(--shiki-dark-text-decoration) !important;
+  }
+}
+
+blockquote {
+  margin: 1.5rem 0;
+  padding-left: 1.1rem;
+  border-left: 2px solid var(--color-rule-strong);
+  color: var(--color-muted);
+}
+
+img,
+svg,
+video {
+  max-width: 100%;
+  height: auto;
+}
+
+/* ---------------------------------------------------------------- tables -- */
+
+/* Tables are the one thing that reliably breaks narrow screens, so each one is
+   wrapped in a horizontally scrollable, focusable region. */
+.table-scroll {
+  overflow-x: auto;
+  margin-bottom: 1rem;
+  padding-bottom: 0.25rem;
+}
+
+table {
+  width: 100%;
+  min-width: 32rem;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+}
+
+th,
+td {
+  text-align: left;
+  vertical-align: top;
+  padding: 0.6rem 1rem 0.6rem 0;
+  border-bottom: 1px solid var(--color-rule);
+}
+
+th {
+  font-family: var(--font-mono);
+  font-weight: 600;
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-faint);
+  white-space: nowrap;
+}
+
+tr:last-child td {
+  border-bottom: 0;
+}
+
+/* On phones a three-column table can only be read by scrolling sideways, so
+   each row is restacked into a block instead. The header row is kept for
+   screen readers. */
+@media (max-width: 40rem) {
+  .table-scroll {
+    overflow-x: visible;
+  }
+
+  table {
+    min-width: 0;
+  }
+
+  thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  tr {
+    display: block;
+    padding-block: 0.85rem;
+    border-bottom: 1px solid var(--color-rule);
+  }
+
+  tr:last-child {
+    border-bottom: 0;
+  }
+
+  td {
+    display: block;
+    padding: 0;
+    border-bottom: 0;
+  }
+
+  /* The first column is always the period or year. */
+  td:first-child {
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
+    font-size: 0.78rem;
+    color: var(--color-faint);
+    margin-bottom: 0.1rem;
+  }
+}
+
+/* ------------------------------------------------------------------ math -- */
+
+.katex-display {
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding-bottom: 0.25rem;
+}
+
+/* --------------------------------------------------------------- motion --- */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ---------------------------------------------------------------- print --- */
+
+@media print {
+  :root {
+    --color-bg: #ffffff;
+    --color-surface: #ffffff;
+    --color-text: #000000;
+    --color-muted: #333333;
+    --color-faint: #555555;
+    --color-rule: #cccccc;
+    --color-rule-strong: #999999;
+    --color-accent: #000000;
+  }
+
+  .layout {
+    display: block;
+    max-width: none;
+  }
+
+  .nav,
+  .site-footer {
+    display: none;
+  }
+
+  a {
+    text-decoration: none;
+  }
+
+  .table-scroll {
+    overflow: visible;
+  }
+
+  table {
+    min-width: 0;
+  }
+}

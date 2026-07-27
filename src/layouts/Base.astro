@@ -1,0 +1,62 @@
+---
+import '@fontsource-variable/inter'
+import '@fontsource-variable/jetbrains-mono'
+import '../styles/global.css'
+
+import { getEntry } from 'astro:content'
+import Sidebar from '../components/Sidebar.astro'
+import Footer from '../components/Footer.astro'
+
+interface Props {
+  /** Page title; the site owner's name is appended automatically. */
+  title?: string
+  description?: string
+}
+
+const profileEntry = await getEntry('profile', 'profile')
+if (!profileEntry) {
+  throw new Error('src/data/profile.yaml could not be loaded')
+}
+const profile = profileEntry.data
+
+const { title, description = profile.tagline ?? '' } = Astro.props
+const pageTitle = title ? `${title} · ${profile.name}` : profile.name
+const canonical = new URL(Astro.url.pathname, Astro.site)
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{pageTitle}</title>
+    {description && <meta name="description" content={description} />}
+    <link rel="canonical" href={canonical} />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <link
+      rel="alternate"
+      type="application/rss+xml"
+      title={`${profile.name} — Blog`}
+      href={new URL('rss.xml', Astro.site)}
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={pageTitle} />
+    {description && <meta property="og:description" content={description} />}
+    <meta property="og:url" content={canonical} />
+    <meta name="twitter:card" content="summary" />
+    <meta name="color-scheme" content="light dark" />
+    <slot name="head" />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <div class="layout">
+      <Sidebar profile={profile} />
+      <div class="column">
+        <main id="main">
+          <slot />
+        </main>
+        <Footer profile={profile} />
+      </div>
+    </div>
+  </body>
+</html>

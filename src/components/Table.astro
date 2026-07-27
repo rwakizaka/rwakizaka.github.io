@@ -1,0 +1,23 @@
+---
+interface Props {
+  /** Accessible name for the scrollable region. */
+  label: string
+  headings: string[]
+}
+
+const { label, headings } = Astro.props
+---
+
+<!-- tabindex makes the overflow area keyboard-scrollable; role+label name it. -->
+<div class="table-scroll" tabindex="0" role="region" aria-label={label}>
+  <table>
+    <thead>
+      <tr>
+        {headings.map((heading) => <th scope="col">{heading}</th>)}
+      </tr>
+    </thead>
+    <tbody>
+      <slot />
+    </tbody>
+  </table>
+</div>

@@ -1,0 +1,30 @@
+---
+import type { CollectionEntry } from 'astro:content'
+
+interface Props {
+  profile: CollectionEntry<'profile'>['data']
+}
+
+const { profile } = Astro.props
+const year = new Date().getFullYear()
+---
+
+<footer class="site-footer">
+  <p class="colophon muted">
+    © {year} {profile.name} · Built with <a href="https://astro.build">Astro</a>
+  </p>
+</footer>
+
+<style>
+  .site-footer {
+    margin-top: 4rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--color-rule);
+  }
+
+  .colophon {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    margin: 0;
+  }
+</style>

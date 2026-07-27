@@ -1,0 +1,106 @@
+---
+import type { Publication } from '../lib/publications'
+import { isSelf } from '../lib/publications'
+
+interface Props {
+  entry: Publication
+  /** Author names to emphasise (the site owner's, from profile.yaml). */
+  aliases: string[]
+}
+
+const { entry, aliases } = Astro.props
+const { year, authors, title, venue, venueUrl, location, note, links } =
+  entry.data
+---
+
+<li class="pub">
+  <div class="pub-year mono">{year}</div>
+
+  <div class="pub-body">
+    <p class="pub-authors">
+      {
+        authors.map((author, index) => (
+          <>
+            {index > 0 && ', '}
+            {isSelf(author, aliases) ? <span class="self">{author}</span> : author}
+          </>
+        ))
+      }
+      {note && <span class="muted"> ({note})</span>}
+    </p>
+
+    <p class="pub-title">{title}</p>
+
+    <p class="pub-venue muted">
+      {venueUrl ? <a href={venueUrl}>{venue}</a> : venue}
+      {location && <span>. {location}</span>}
+    </p>
+
+    {
+      links.length > 0 && (
+        <p class="pub-links">
+          {links.map((link) => (
+            <a class="chip" href={link.url}>
+              {link.label}
+            </a>
+          ))}
+        </p>
+      )
+    }
+  </div>
+</li>
+
+<style>
+  .pub {
+    display: grid;
+    grid-template-columns: 3.25rem 1fr;
+    gap: 0 1rem;
+    margin: 0 0 1.75rem;
+  }
+
+  /* Narrow screens: the year sits above the entry instead of beside it. */
+  @media (max-width: 32rem) {
+    .pub {
+      grid-template-columns: 1fr;
+      gap: 0.1rem;
+    }
+  }
+
+  .pub-year {
+    font-size: 0.8rem;
+    color: var(--color-faint);
+    padding-top: 0.28rem;
+  }
+
+  .pub-body > p {
+    margin: 0;
+  }
+
+  .pub-authors {
+    font-size: 0.9rem;
+    color: var(--color-muted);
+  }
+
+  .self {
+    color: var(--color-text);
+    font-weight: 600;
+  }
+
+  .pub-title {
+    font-weight: 560;
+    line-height: 1.45;
+    margin-block: 0.1rem !important;
+    text-wrap: pretty;
+  }
+
+  .pub-venue {
+    font-size: 0.875rem;
+  }
+
+  .pub-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-top: 0.5rem !important;
+  }
+</style>

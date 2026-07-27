@@ -1,0 +1,46 @@
+# Basic identity and contact details shown in the header, home page and footer.
+name: Ryo Wakizaka
+role: Ph.D. Student
+tagline: Quantum programming languages, type systems, and compilation.
+
+# Short introduction shown at the top of the home page.
+bio: >-
+  I am a Ph.D. student in the Igarashi and Suenaga Lab at Kyoto University,
+  working on quantum programming languages, type systems, and the compilation
+  of high-level quantum programs.
+
+# Every author string in publications.yaml that matches one of these is
+# rendered with emphasis (no need to write <u> by hand).
+nameAliases:
+  - Ryo Wakizaka
+  - 脇坂遼
+
+affiliation:
+  - text: Igarashi and Suenaga Lab
+    url: http://www.fos.kuis.kyoto-u.ac.jp/
+  - text: Department of Communications and Computer Engineering
+  - text: Graduate School of Informatics
+  - text: Kyoto University
+
+researchInterests:
+  - Quantum programming languages and type systems
+  - Quantum computer architectures
+  - Compilation of high-level quantum programs
+
+# Rendered obfuscated on the page ("name [at] domain") but linked as mailto:.
+email: wakizaka@fos.kuis.kyoto-u.ac.jp
+
+# Shown in the footer. Comment out or add entries freely.
+links:
+  - label: ORCID
+    url: https://orcid.org/0000-0001-8762-9335
+  - label: GitHub
+    url: https://github.com/rwakizaka
+  # - label: Google Scholar
+  #   url: https://scholar.google.com/citations?user=YOUR_ID
+  # - label: DBLP
+  #   url: https://dblp.org/pid/YOUR_ID.html
+
+# Set to a file you place in public/ (e.g. cv.pdf) to show a CV link in the
+# header. Leave empty to hide the link entirely.
+cv: ""

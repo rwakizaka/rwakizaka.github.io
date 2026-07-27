@@ -1,0 +1,18 @@
+# Short updates shown on the home page (most recent first, automatically).
+# `date` accepts YYYY-MM or YYYY-MM-DD. Only the newest few are shown on the
+# home page — see `newsLimit` in src/pages/index.astro.
+#
+# These entries were seeded from the dates already recorded in publications.yaml;
+# edit or replace them freely.
+
+- date: 2025-04
+  text: Presented a poster on online job scheduling for fault-tolerant quantum multiprogramming at QCTiP2025 in Berlin.
+
+- date: 2025-03
+  text: Presented at QIT14 and PPL2025 on compositional qubit allocation for lattice surgery programs.
+
+- date: 2025-01
+  text: Gave a talk on concurrent quantum separation logic at PLanQC2025, co-located with POPL 2025 in Denver.
+
+- date: 2024-09
+  text: Presented a poster on resource-aware deadlock freedom for distributed quantum programs at IWQC2024 in Berlin.

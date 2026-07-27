@@ -1,0 +1,32 @@
+---
+import { getCollection, getEntry } from 'astro:content'
+import Base from '../layouts/Base.astro'
+import PubEntry from '../components/PubEntry.astro'
+import { groupByKind } from '../lib/publications'
+
+const profileEntry = await getEntry('profile', 'profile')
+if (!profileEntry) throw new Error('src/data/profile.yaml could not be loaded')
+const profile = profileEntry.data
+
+const sections = groupByKind(await getCollection('publications'))
+---
+
+<Base
+  title="Publications"
+  description={`Publications, talks and posters by ${profile.name}.`}
+>
+  <h1>Publications</h1>
+
+  {
+    sections.map((section) => (
+      <>
+        <h2>{section.heading}</h2>
+        <ul class="plain-list">
+          {section.entries.map((entry) => (
+            <PubEntry entry={entry} aliases={profile.nameAliases} />
+          ))}
+        </ul>
+      </>
+    ))
+  }
+</Base>

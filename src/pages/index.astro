@@ -1,0 +1,241 @@
+---
+import { getCollection, getEntry } from 'astro:content'
+import Base from '../layouts/Base.astro'
+import PubEntry from '../components/PubEntry.astro'
+import Table from '../components/Table.astro'
+import { byDateDesc } from '../lib/publications'
+import { formatNewsDate, obfuscateEmail } from '../lib/format'
+
+/** How many news items to show before "the rest is in the CV below". */
+const newsLimit = 4
+/** How many refereed papers to feature on the home page. */
+const selectedLimit = 3
+
+const profileEntry = await getEntry('profile', 'profile')
+if (!profileEntry) throw new Error('src/data/profile.yaml could not be loaded')
+const profile = profileEntry.data
+
+// `YYYY-MM` and `YYYY-MM-DD` mix in news.yaml; pad so string compare is correct.
+const sortKey = (date: string) => (date.length === 7 ? `${date}-01` : date)
+
+const news = (await getCollection('news'))
+  .sort((a, b) => sortKey(b.data.date).localeCompare(sortKey(a.data.date)))
+  .slice(0, newsLimit)
+
+const publications = await getCollection('publications')
+const selected = publications
+  .filter((entry) => entry.data.kind === 'journal' || entry.data.kind === 'conference')
+  .sort(byDateDesc)
+  .slice(0, selectedLimit)
+
+const education = await getCollection('education')
+const awards = (await getCollection('awards')).sort((a, b) => b.data.year - a.data.year)
+const activities = (await getCollection('activities')).sort(
+  (a, b) => b.data.year - a.data.year,
+)
+const experience = await getCollection('experience')
+const teaching = await getCollection('teaching')
+const service = (await getCollection('service')).sort((a, b) => b.data.year - a.data.year)
+---
+
+<Base>
+  {profile.bio && <p class="bio">{profile.bio}</p>}
+
+  <h2>Research Interests</h2>
+  <ul>
+    {profile.researchInterests.map((interest) => <li>{interest}</li>)}
+  </ul>
+
+  {
+    news.length > 0 && (
+      <>
+        <h2>News</h2>
+        <ul class="plain-list news">
+          {news.map((item) => (
+            <li>
+              <time class="mono news-date" datetime={item.data.date}>
+                {formatNewsDate(item.data.date)}
+              </time>
+              <span>
+                {item.data.url ? (
+                  <a href={item.data.url}>{item.data.text}</a>
+                ) : (
+                  item.data.text
+                )}
+              </span>
+            </li>
+          ))}
+        </ul>
+      </>
+    )
+  }
+
+  {
+    selected.length > 0 && (
+      <>
+        <h2>Selected Publications</h2>
+        <ul class="plain-list">
+          {selected.map((entry) => (
+            <PubEntry entry={entry} aliases={profile.nameAliases} />
+          ))}
+        </ul>
+        <p class="more">
+          <a href="/publications">All publications →</a>
+        </p>
+      </>
+    )
+  }
+
+  <h2>Education</h2>
+  <ul class="plain-list stack">
+    {
+      education.map((item) => (
+        <li class="row">
+          <span class="mono row-key">{item.data.period}</span>
+          <span>
+            {item.data.degree}
+            <span class="muted">, {item.data.institution}</span>
+          </span>
+        </li>
+      ))
+    }
+  </ul>
+
+  <h2>Honors</h2>
+  <ul class="plain-list stack">
+    {
+      awards.map((item) => (
+        <li class="row">
+          <span class="mono row-key">{item.data.year}</span>
+          <span>
+            {item.data.title}
+            <span class="muted">, {item.data.venue}</span>
+          </span>
+        </li>
+      ))
+    }
+  </ul>
+
+  <h2>Activities</h2>
+  <ul class="plain-list stack">
+    {
+      activities.map((item) => (
+        <li class="row">
+          <span class="mono row-key">{item.data.year}</span>
+          <span>
+            {item.data.title}
+            {item.data.result && <span class="muted"> — {item.data.result}</span>}
+          </span>
+        </li>
+      ))
+    }
+  </ul>
+
+  <h2>Work Experience</h2>
+  <Table label="Work experience" headings={['Period', 'Position', 'Organization']}>
+    {
+      experience.map((item) => (
+        <tr>
+          <td class="mono nowrap">{item.data.period}</td>
+          <td>
+            {item.data.position}
+            {item.data.note && <div class="muted note">({item.data.note})</div>}
+          </td>
+          <td>{item.data.organization}</td>
+        </tr>
+      ))
+    }
+  </Table>
+
+  <h2>Academic Service</h2>
+  <Table label="Academic service" headings={['Year', 'Role', 'Venue']}>
+    {
+      service.map((item) => (
+        <tr>
+          <td class="mono nowrap">{item.data.year}</td>
+          <td>{item.data.role}</td>
+          <td>{item.data.url ? <a href={item.data.url}>{item.data.venue}</a> : item.data.venue}</td>
+        </tr>
+      ))
+    }
+  </Table>
+
+  <h2>Teaching Experience</h2>
+  <Table label="Teaching experience" headings={['Period', 'Role', 'Description']}>
+    {
+      teaching.map((item) => (
+        <tr>
+          <td class="mono nowrap">{item.data.period}</td>
+          <td class="nowrap">{item.data.role}</td>
+          <td>{item.data.description}</td>
+        </tr>
+      ))
+    }
+  </Table>
+
+  <h2>Contact</h2>
+  <p>
+    <a href={`mailto:${profile.email}`}>{obfuscateEmail(profile.email)}</a>
+  </p>
+</Base>
+
+<style>
+  .bio {
+    font-size: 1.05rem;
+    line-height: 1.65;
+    margin-top: 0;
+  }
+
+  .news li,
+  .stack .row {
+    display: grid;
+    grid-template-columns: 6.5rem 1fr;
+    gap: 0 1rem;
+    margin-bottom: 0.6rem;
+  }
+
+  .stack .row {
+    grid-template-columns: 7.5rem 1fr;
+  }
+
+  .news-date,
+  .row-key {
+    font-size: 0.8rem;
+    color: var(--color-faint);
+    padding-top: 0.2rem;
+    white-space: nowrap;
+  }
+
+  @media (max-width: 32rem) {
+    .news li,
+    .stack .row {
+      grid-template-columns: 1fr;
+      gap: 0;
+      margin-bottom: 0.9rem;
+    }
+  }
+
+  .more {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+  }
+
+  .more a {
+    text-decoration: none;
+    color: var(--color-muted);
+  }
+
+  .more a:hover,
+  .more a:focus-visible {
+    color: var(--color-accent);
+  }
+
+  .nowrap {
+    white-space: nowrap;
+  }
+
+  .note {
+    font-size: 0.8rem;
+    line-height: 1.4;
+  }
+</style>

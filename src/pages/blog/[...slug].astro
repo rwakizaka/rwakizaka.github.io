@@ -1,0 +1,92 @@
+---
+import { getCollection, render, type CollectionEntry } from 'astro:content'
+import Base from '../../layouts/Base.astro'
+import { formatDate } from '../../lib/format'
+// Only blog posts can contain maths, so KaTeX's stylesheet stays off every
+// other page.
+import 'katex/dist/katex.min.css'
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog', ({ data }) => !data.draft)
+  return posts.map((post) => ({
+    params: { slug: post.id },
+    props: { post },
+  }))
+}
+
+type Props = { post: CollectionEntry<'blog'> }
+
+const { post } = Astro.props
+const { Content } = await render(post)
+---
+
+<Base title={post.data.title} description={post.data.description}>
+  <article>
+    <h1>{post.data.title}</h1>
+    <p class="meta mono muted">
+      <time datetime={post.data.pubDate.toISOString()}>
+        {formatDate(post.data.pubDate)}
+      </time>
+      {
+        post.data.updatedDate && (
+          <span>
+            {' '}· updated{' '}
+            <time datetime={post.data.updatedDate.toISOString()}>
+              {formatDate(post.data.updatedDate)}
+            </time>
+          </span>
+        )
+      }
+    </p>
+
+    <div class="prose">
+      <Content />
+    </div>
+  </article>
+
+  <p class="back">
+    <a href="/blog">← All posts</a>
+  </p>
+</Base>
+
+<style>
+  .meta {
+    font-size: 0.8rem;
+    margin-bottom: 2.5rem;
+  }
+
+  /* Headings inside a post are content, not section labels, so undo the
+     small-caps treatment that global.css gives <h2>. */
+  .prose :global(h2) {
+    font-family: var(--font-sans);
+    font-size: 1.3rem;
+    font-weight: 620;
+    letter-spacing: -0.015em;
+    text-transform: none;
+    color: var(--color-text);
+    border-bottom: 0;
+    padding-bottom: 0;
+    margin: 2.5rem 0 0.75rem;
+  }
+
+  .prose :global(h3) {
+    font-size: 1.1rem;
+    margin: 2rem 0 0.6rem;
+  }
+
+  .back {
+    margin-top: 3.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+  }
+
+  .back a {
+    text-decoration: none;
+    color: var(--color-muted);
+  }
+
+  .back a:hover,
+  .back a:focus-visible {
+    color: var(--color-accent);
+  }
+</style>
