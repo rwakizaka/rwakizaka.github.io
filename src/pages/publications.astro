@@ -9,6 +9,13 @@ if (!profileEntry) throw new Error('src/data/profile.yaml could not be loaded')
 const profile = profileEntry.data
 
 const sections = groupByKind(await getCollection('publications'))
+
+// The note below points at whichever scholarly profiles are configured in
+// profile.yaml, so filling in the commented-out Google Scholar entry there is
+// enough to have it appear here too.
+const profiles = profile.links.filter((link) =>
+  /orcid|scholar/i.test(link.label),
+)
 ---
 
 <Base
@@ -16,6 +23,22 @@ const sections = groupByKind(await getCollection('publications'))
   description={`Publications, talks and posters by ${profile.name}.`}
 >
   <h1>Publications</h1>
+
+  {
+    profiles.length > 0 && (
+      <p class="note muted">
+        This list is maintained by hand; please refer to my{' '}
+        {profiles.map((link, index) => (
+          <>
+            {index > 0 && (index === profiles.length - 1 ? ' or ' : ', ')}
+            <a href={link.url}>{link.label}</a>
+          </>
+        ))}{' '}
+        {profiles.length > 1 ? 'profiles' : 'profile'} for the most accurate and
+        up-to-date record.
+      </p>
+    )
+  }
 
   {
     sections.map((section) => (
@@ -30,3 +53,10 @@ const sections = groupByKind(await getCollection('publications'))
     ))
   }
 </Base>
+
+<style>
+  .note {
+    font-size: var(--text-sm);
+    margin-bottom: 0;
+  }
+</style>
