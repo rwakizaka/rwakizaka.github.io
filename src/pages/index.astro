@@ -200,8 +200,8 @@ const service = (await getCollection('service')).sort((a, b) => b.data.year - a.
 
   .news-date,
   .row-key {
-    font-size: 0.8rem;
-    color: var(--color-faint);
+    font-size: var(--text-sm);
+    color: var(--color-muted);
     padding-top: 0.2rem;
     white-space: nowrap;
   }
@@ -217,7 +217,7 @@ const service = (await getCollection('service')).sort((a, b) => b.data.year - a.
 
   .more {
     font-family: var(--font-mono);
-    font-size: 0.8rem;
+    font-size: var(--text-sm);
   }
 
   .more a {
@@ -235,7 +235,7 @@ const service = (await getCollection('service')).sort((a, b) => b.data.year - a.
   }
 
   .note {
-    font-size: 0.8rem;
+    font-size: var(--text-sm);
     line-height: 1.4;
   }
 </style>
