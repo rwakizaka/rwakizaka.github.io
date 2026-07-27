@@ -14,7 +14,7 @@
 
   /* Secondary type scale. Every small size in the site comes from here —
      adjust these four values rather than hunting through components. */
-  --text-label: 0.8125rem; /* uppercase section headings */
+  --text-label: 1rem; /* uppercase section headings */
   --text-xs: 0.8rem; /* chips, colophon, contact links, table headers */
   --text-sm: 0.875rem; /* dates, venues, nav, captions */
   --text-md: 0.925rem; /* author lists, excerpts */
