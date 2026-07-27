@@ -1,12 +1,17 @@
 ---
 title: Writing posts on this site
-description: A starter post showing the front matter, maths and code support. Delete it whenever you like.
+description: Reference for the front matter, maths and code support. Kept as a draft, so it is not published.
 pubDate: 2026-07-28
+draft: true
 ---
 
-This is an example post. Create a new one by adding a Markdown file under
-`src/content/blog/` — the file name becomes the URL, so `lattice-surgery.md`
-is served at `/blog/lattice-surgery/`.
+This post is a **draft** (`draft: true` above), so it is excluded from the
+build, the blog index, the RSS feed and the sitemap. It is here purely as a
+reference for writing the first real post.
+
+Create a new post by adding a Markdown file under `src/content/blog/` — the
+file name becomes the URL, so `lattice-surgery.md` is served at
+`/blog/lattice-surgery/`.
 
 ## Front matter
 
@@ -46,7 +51,10 @@ let rec alloc (g : coupling_graph) = function
   | App (e1, e2) -> alloc g e1 @ alloc g e2
 ```
 
-## Deleting this post
+## Publishing
 
-Just remove `src/content/blog/writing-posts.md`. If no posts remain, the blog
-index shows "No posts yet." rather than breaking.
+Remove the `draft: true` line (or set it to `false`) and the post appears on
+`/blog` and in the feed on the next build. Until then the blog index shows
+"No posts yet." rather than breaking.
+
+This file can be deleted outright once it has served its purpose.
